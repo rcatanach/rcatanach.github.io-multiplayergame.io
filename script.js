@@ -1,34 +1,109 @@
+let deck = [];
+let discardPile = [];
+let playerHand = [];
+let opponentHand = [];
+let currentPlayer = 0; // 0 for player, 1 for opponent
+
 document.addEventListener('DOMContentLoaded', function() {
-    const deck = document.getElementById('deck');
-    const discardPile = document.getElementById('discard-pile');
-    const playerHand = document.getElementById('player-hand');
-    const opponentHand = document.getElementById('opponent-hand');
+    const deckElement = document.getElementById('deck');
+    const discardPileElement = document.getElementById('discard-pile');
+    const playerHandElement = document.getElementById('player-hand');
+    const opponentHandElement = document.getElementById('opponent-hand');
 
-    // Function to shuffle the deck
+    function initializeDeck() {
+        const colors = ['red', 'blue', 'green', 'yellow'];
+        const values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'skip', 'reverse', 'draw-two'];
+        const wilds = ['wild', 'wild-draw-four'];
+        
+        let deck = [];
+        
+        for (let color of colors) {
+            for (let value of values) {
+                deck.push({ color, value });
+            }
+        }
+        
+        for (let wild of wilds) {
+            deck.push({ color: 'wild', value: wild });
+        }
+        
+        return deck;
+    }
+
     function shuffleDeck() {
-        // Implementation of shuffling logic goes here
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
     }
 
-    // Function to deal cards to players
     function dealCards() {
-        // Implementation of dealing logic goes here
+        playerHand = deck.splice(0, 7);
+        opponentHand = deck.splice(0, 7);
     }
 
-    // Function to draw a card from the deck
+    function displayGameState() {
+        playerHand.forEach((card, index) => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.style.backgroundColor = card.color;
+            cardElement.textContent = card.value;
+            cardElement.addEventListener('click', () => playCard(index));
+            playerHandElement.appendChild(cardElement);
+        });
+        
+        opponentHand.forEach((card, index) => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.style.backgroundColor = card.color;
+            cardElement.textContent = card.value;
+            opponentHandElement.appendChild(cardElement);
+        });
+        
+        discardPile.forEach((card, index) => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.style.backgroundColor = card.color;
+            cardElement.textContent = card.value;
+            discardPileElement.appendChild(cardElement);
+        });
+    }
+
     function drawCard() {
-        // Implementation of drawing logic goes here
+        const card = deck.pop();
+        playerHand.push(card);
     }
 
-    // Function to play a card
-    function playCard() {
-        // Implementation of playing logic goes here
+    function playCard(index) {
+        const card = playerHand.splice(index, 1)[0];
+        discardPile.push(card);
+        
+        if (playerHand.length === 0) {
+            alert('You win!');
+        }
+        
+        currentPlayer = 1;
+        
+        opponentTurn();
     }
 
-    // Initialize the game
+    function opponentTurn() {
+        const card = deck.pop();
+        opponentHand.push(card);
+        
+        if (opponentHand.length === 0) {
+            alert('Opponent wins!');
+        }
+        
+        currentPlayer = 0;
+    }
+
     function initGame() {
-        // Implementation of game initialization goes here
+        deck = initializeDeck();
+        shuffleDeck();
+        dealCards();
+        displayGameState();
     }
 
-    // Call initGame to start the game
     initGame();
 });
