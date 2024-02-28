@@ -43,28 +43,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayGameState() {
+        // Clear existing card elements
+        playerHandElement.innerHTML = '';
+        opponentHandElement.innerHTML = '';
+        discardPileElement.innerHTML = '';
+
+        // Display player's hand
         playerHand.forEach((card, index) => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-            cardElement.style.backgroundColor = card.color;
-            cardElement.textContent = card.value;
+            cardElement.textContent = `${card.color}-${card.value}`;
             cardElement.addEventListener('click', () => playCard(index));
             playerHandElement.appendChild(cardElement);
         });
         
+        // Display opponent's hand
         opponentHand.forEach((card, index) => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-            cardElement.style.backgroundColor = card.color;
-            cardElement.textContent = card.value;
+            cardElement.textContent = 'Card';
             opponentHandElement.appendChild(cardElement);
         });
         
+        // Display discard pile
         discardPile.forEach((card, index) => {
             const cardElement = document.createElement('div');
             cardElement.classList.add('card');
-            cardElement.style.backgroundColor = card.color;
-            cardElement.textContent = card.value;
+            cardElement.textContent = `${card.color}-${card.value}`;
             discardPileElement.appendChild(cardElement);
         });
     }
