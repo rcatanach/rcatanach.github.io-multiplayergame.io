@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uno Game</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badminton Pong Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-board">
-        <div id="deck" class="card"></div>
-        <div id="discard-pile" class="card"></div>
-        <div id="player-hand" class="card"></div>
-        <div id="opponent-hand" class="card"></div>
+  <div class="container">
+    <h1 class="title">Badminton Pong</h1>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div class="button-container">
+      <button id="instructionsButton" class="instructionsButton" onclick="toggleInstructions()">Instructions</button>
+      <div id="instructions" class="instructions">Instructions: Press 'w' and 's' to move the left paddle. Press the up and down arrow keys to move the right paddle. The first player to reach 21 points wins!</div>
     </div>
-    <script src="script.js"></script>
+    <div id="endPage" class="endPage">
+        <div id="winnerMessage" class="winnerMessage"></div>
+        <div id="scoreMessage" class="scoreMessage"></div>
+        <button id="resetButton" class="resetButton" onclick="resetGame()">Play Again</button>
+      </div>      
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
