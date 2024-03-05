@@ -41,7 +41,7 @@ function resetGame() {
     ballPosition = { x: canvas.width / 2, y: canvas.height / 2 };
     player1Position = { x: 10, y: canvas.height / 2 - paddleHeight / 2 };
     player2Position = { x: canvas.width - 10 - paddleWidth, y: canvas.height / 2 - paddleHeight / 2 };
-    
+   
     // Recalculate ballVelocity after updating ballSpeed
     ballVelocity = {
         x: ballVelocity.x !== 0 ? ballSpeed * Math.sign(ballVelocity.x) : ballSpeed,
@@ -380,9 +380,104 @@ function checkWinCondition() {
         // Display the end page
         displayEndPage(winner, `${player1Score}-${player2Score}`);
 
+        // Trigger confetti animation when a player wins
+        triggerConfetti();
+
         // Stop the game loop
         cancelAnimationFrame(gameLoop);
     }
 }
+
 // Add event listener for start button
 document.getElementById('startButton').addEventListener('click', startGame);
+
+
+// Function to trigger the confetti animation, extra credit
+// got inspo from https://cdn.jsdelivr.net/npm/canvas-confetti@1.0.1/dist/canvas-confetti.min.js
+function triggerConfetti() {
+    // Create a canvas element and append it to the body
+    const canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+
+    // Set canvas styles
+    canvas.style.position = 'fixed';
+    canvas.style.left = '0';
+    canvas.style.top = '0';
+    canvas.style.pointerEvents = 'none';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Get canvas context
+    const ctx = canvas.getContext('2d');
+
+    // Array to store confetti pieces
+    const pieces = [];
+    const numberOfPieces = 300;
+    const angleIncrement = Math.PI * 2 / numberOfPieces;
+    const radius = 10;
+
+    // Initialize confetti pieces
+    for (let i = 0; i < numberOfPieces; i++) {
+        pieces.push({
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            angle: i * angleIncrement,
+            rotation: Math.random() * Math.PI,
+            color: `hsl(${Math.random() * 360}, 50%, 50%)`,
+            speed: 5 + Math.random() * 5,
+            radius: Math.random() * 2 + radius
+        });
+    }
+
+    // Function to update and draw confetti animation
+    function update() {
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Update and draw each confetti piece
+        pieces.forEach((piece, index) => {
+            piece.x += Math.cos(piece.angle) * piece.speed;
+            piece.y += Math.sin(piece.angle) * piece.speed + piece.radius * 0.1;
+            piece.rotation += piece.speed * 0.1;
+
+            // Remove pieces outside canvas
+            if (piece.x < -50 || piece.x > canvas.width + 50 || piece.y < -50 || piece.y > canvas.height + 50) {
+                pieces.splice(index, 1);
+            }
+
+            // Draw piece
+            ctx.save();
+            ctx.translate(piece.x, piece.y);
+            ctx.rotate(piece.rotation);
+            ctx.fillStyle = piece.color;
+            ctx.fillRect(-piece.radius / 2, -piece.radius / 2, piece.radius, piece.radius);
+            ctx.restore();
+        });
+
+        // Add new confetti pieces if needed
+        if (pieces.length < numberOfPieces) {
+            pieces.push({
+                x: canvas.width / 2,
+                y: canvas.height / 2,
+                angle: Math.random() * Math.PI * 2,
+                rotation: Math.random() * Math.PI,
+                color: `hsl(${Math.random() * 360}, 50%, 50%)`,
+                speed: 5 + Math.random() * 5,
+                radius: Math.random() * 2 + radius
+            });
+        }
+
+        // Request next animation frame
+        requestAnimationFrame(update);
+    }
+
+    // Start the animation loop
+    update();
+
+    // Stop confetti after 2 seconds
+    setTimeout(() => {
+        document.body.removeChild(canvas); // Remove the canvas from the DOM
+    }, 2000); // 2000 milliseconds = 2 seconds
+}
+
+
