@@ -143,14 +143,4 @@ body {
     font-size: 16px;
   }
 
- /*
-    extra credit
-  */ 
-  .title {
-    transition: transform 0.3s ease; /* Add transition for smooth animation */
-}
-
-.title:hover {
-    transform: translateX(20px); /* Move the title 20 pixels to the right on hover */
-}
 
