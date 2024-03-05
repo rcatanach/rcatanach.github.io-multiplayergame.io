@@ -1,3 +1,4 @@
+<!-- Renee Catanach badminton pong -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +10,19 @@
 <body>
   <div class="container">
     <h1 class="title">Badminton Pong</h1>
+    <div id="startPage" class="startPage">
+      <button id="startButton" class="startButton">Start</button>
+    </div>
     <canvas id="gameCanvas" width="800" height="400"></canvas>
     <div class="button-container">
       <button id="instructionsButton" class="instructionsButton" onclick="toggleInstructions()">Instructions</button>
-      <div id="instructions" class="instructions">Instructions: Press 'w' and 's' to move the left paddle. Press the up and down arrow keys to move the right paddle. The first player to reach 21 points wins!</div>
+      <div id="instructions" class="instructions">Instructions: Press 'w' and 's' to move the left paddle up and down, and 'a' and 'd' to move left and right. Press the up and down arrow keys to move the right paddle up and down, and left and right arrows to move left and right. The first player to reach 21 points wins!</div>
     </div>
     <div id="endPage" class="endPage">
         <div id="winnerMessage" class="winnerMessage"></div>
         <div id="scoreMessage" class="scoreMessage"></div>
         <button id="resetButton" class="resetButton" onclick="resetGame()">Play Again</button>
-      </div>      
+    </div>      
   </div>
   <script src="script.js"></script>
 </body>
